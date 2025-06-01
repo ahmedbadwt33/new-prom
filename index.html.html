@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Promposal for Juju</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-bottom: 200px;
+      overflow: hidden;
+      cursor: none;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      text-align: center;
+      margin-top: 60px;
+      max-width: 90%;
+      z-index: 10;
+      position: relative;
+    }
+
+    .options {
+      margin-top: 30px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .options label {
+      font-size: 1.5em;
+      margin: 0 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 50px;
+      gap: 15px;
+      max-width: 90%;
+      z-index: 10;
+      position: relative;
+    }
+
+    .gallery img {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    .final-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      color: pink;
+      font-size: 2.5em;
+      z-index: 9999;
+      animation: fadeIn 2s ease forwards;
+      opacity: 0;
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Heart style for cursor */
+    .heart {
+      width: 20px;
+      height: 20px;
+      position: fixed;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="red" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+      background-size: contain;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      will-change: transform, opacity;
+      z-index: 99999;
+    }
+  </style>
+</head>
+<body>
+  <h1>Juju, would you make me the luckiest guy in the world and ride with me to prom? 💖</h1>
+
+  <div class="options" id="checkboxes">
+    <label><input type="checkbox" class="yesBox"> Yes</label>
+    <label><input type="checkbox" class="yesBox"> Yes</label>
+  </div>
+
+  <div class="gallery" id="photoGallery">
+    <img src="453882ef-e39f-428c-89b7-8a6b459b0404.jpg" alt="Us 1" />
+    <img src="98c02052-51c3-4bb4-9960-f0fdbd382a8f.jpg" alt="Us 2" />
+    <img src="71ce053b-d0d9-40f2-b9c4-9aa9a3bd72d1.jpg" alt="Us 3" />
+    <img src="57d29de7-a3d9-46ec-84a6-b9005a74348a.jpg" alt="Us 4" />
+    <img src="54ff90d2-0a83-451d-a228-ab9f007f2585.jpg" alt="Us 5" />
+    <img src="0be00563-b315-4849-b420-f797ca08bcb7.jpg" alt="Us 6" />
+  </div>
+
+  <!-- Hidden audio player -->
+  <audio id="promSong" loop>
+    <source src="audio.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="final-message" id="finalScreen">
+    💖 I'm SO excited for prom with you, my love 💖<br />
+    You just made me the happiest guy alive 💕
+  </div>
+
+  <script>
+    // Music + final message logic
+    const checkboxes = document.querySelectorAll('.yesBox');
+    const audio = document.getElementById('promSong');
+    const finalScreen = document.getElementById('finalScreen');
+
+    checkboxes.forEach(box => {
+      box.addEventListener('change', () => {
+        if (box.checked) {
+          audio.play();
+          finalScreen.style.display = 'flex';
+          checkboxes.forEach(cb => (cb.disabled = true));
+        }
+      });
+    });
+
+    // Hearts cursor effect (more hearts, faster fade)
+    const hearts = [];
+    const maxHearts = 30;
+
+    window.addEventListener('mousemove', e => {
+      if (hearts.length >= maxHearts) {
+        const oldHeart = hearts.shift();
+        oldHeart.remove();
+      }
+
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      document.body.appendChild(heart);
+
+      heart.style.left = e.clientX + 'px';
+      heart.style.top = e.clientY + 'px';
+
+      hearts.push(heart);
+
+      setTimeout(() => {
+        heart.style.opacity = '0';
+        heart.style.transform = 'translate(-50%, -50%) scale(0.5)';
+      }, 30);
+
+      setTimeout(() => {
+        heart.remove();
+        const index = hearts.indexOf(heart);
+        if (index > -1) hearts.splice(index, 1);
+      }, 400);
+    });
+  </script>
+</body>
+</html>
