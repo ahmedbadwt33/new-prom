@@ -7,8 +7,6 @@
     body {
       margin: 0;
       height: 100vh;
-      background: black;
-      color: white;
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
@@ -17,6 +15,15 @@
       padding-bottom: 200px;
       overflow: hidden;
       cursor: none;
+      animation: bgFade 10s infinite alternate;
+      background: linear-gradient(135deg, #ffe4ec, #ffd6e8, #ffb6d9);
+      background-size: 400% 400%;
+      color: white;
+    }
+
+    @keyframes bgFade {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
     }
 
     h1 {
@@ -26,6 +33,14 @@
       max-width: 90%;
       z-index: 10;
       position: relative;
+      color: #fff0f5;
+      text-shadow: 0 0 15px pink;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px pink; }
+      to { text-shadow: 0 0 20px #ff69b4; }
     }
 
     .options {
@@ -56,11 +71,18 @@
       max-width: 90%;
       z-index: 10;
       position: relative;
+      opacity: 0;
+      animation: fadeInGallery 2s ease forwards;
+      animation-delay: 1s;
+    }
+
+    @keyframes fadeInGallery {
+      to { opacity: 1; }
     }
 
     .gallery img {
-      width: 250px;
-      height: 250px;
+      width: 300px;
+      height: 300px;
       object-fit: cover;
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
@@ -78,7 +100,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: black;
+      background: rgba(0, 0, 0, 0.9);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -98,7 +120,6 @@
       }
     }
 
-    /* Heart style for cursor */
     .heart {
       width: 20px;
       height: 20px;
@@ -131,7 +152,6 @@
     <img src="0be00563-b315-4849-b420-f797ca08bcb7.jpg" alt="Us 6" />
   </div>
 
-  <!-- Hidden audio player -->
   <audio id="promSong" loop>
     <source src="audio.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
@@ -143,7 +163,6 @@
   </div>
 
   <script>
-    // Music + final message logic
     const checkboxes = document.querySelectorAll('.yesBox');
     const audio = document.getElementById('promSong');
     const finalScreen = document.getElementById('finalScreen');
@@ -158,9 +177,9 @@
       });
     });
 
-    // Hearts cursor effect (more hearts, faster fade)
+    // Hearts
     const hearts = [];
-    const maxHearts = 30;
+    const maxHearts = 40;
 
     window.addEventListener('mousemove', e => {
       if (hearts.length >= maxHearts) {
